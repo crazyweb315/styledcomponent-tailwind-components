@@ -19,7 +19,7 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v3
         with:
-          ref: feat/github-release-workflow
+          ref: main
 
     #   - name: Merge develop into master
     #     run: |
