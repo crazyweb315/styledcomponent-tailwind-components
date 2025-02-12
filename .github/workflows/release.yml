@@ -13,6 +13,11 @@ jobs:
 
     steps:
 
+      - name: Checkout master branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
       - name: Configure git
         run: |
           git config --global user.email "github-actions@github.com"
@@ -45,11 +50,6 @@ jobs:
 
       - name: List files
         run: ls -la  
-
-      - name: Checkout main branch
-        uses: actions/checkout@v3
-        with:
-          ref: main
 
       - name: Merge develop into main
         run: |
