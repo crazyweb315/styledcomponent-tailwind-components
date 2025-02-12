@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "Version name ${{github.workspace}}" 
           cd ${{ github.workspace }}/
-          yarn version --new-version ${{ inputs.next_version }}
+          npm version --new-version ${{ inputs.next_version }}
         #   cd ${{ github.workspace }}/apps/api
         #   yarn version --new-version ${{ inputs.next_version }}
 
