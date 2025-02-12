@@ -53,7 +53,7 @@ jobs:
 
       - name: Merge develop into main
         run: |
-          git merge --no-ff feat/release-workflow-test   # need to be updated to development after test
+          git merge --no-ff develop   # need to be updated to development after test
           git push origin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
