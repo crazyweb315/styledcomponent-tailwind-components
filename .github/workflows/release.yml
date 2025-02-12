@@ -1,16 +1,9 @@
 name: Release Workflow
-run-name: Release release
+
 on:
   release:
     types: [published]  
   
-  # workflow_dispatch:
-  #   inputs:
-  #     next_version:
-  #       required: true
-  #       type: string
-  #       description: 'Version name'
-
 permissions:
   contents: write
 
@@ -19,10 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout master branch
-        uses: actions/checkout@v3
-        with:
-          ref: main
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
 
       - name: Create a tag from release
         env:
@@ -31,68 +25,55 @@ jobs:
           TAG_NAME="${{ github.event.release.tag_name }}"  # Extracts the tag name from the release event
           echo "Tagging with $TAG_NAME"
           
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          
           # Create and push the tag
           git tag "$TAG_NAME"
           git push origin "$TAG_NAME"          
-    #   - name: Merge develop into master
-    #     run: |
-    #       git config user.name "GitHub Actions"
-    #       git config user.email "actions@github.com"
-    #       git merge --no-ff 603-implement-a-release-workflow
-    #       git push origin feat/github-release-workflow
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'  # Specify the Node.js version you are using
 
-      # - name: Check npm version
-      #   run: npm --version
+      - name: Set Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+    
+      - name: Check npm version
+        run: 
+          npm --version
+          yarn --version
   
-      # - name: Confirm current directory
-      #   run: pwd
+      - name: Confirm current directory
+        run: pwd
 
-      # - name: List files
-      #   run: ls -la  # List files to ensure package.json is present
+      - name: List files
+        run: ls -la  
 
-      # - name: Configure git
-      #   run: |
-      #     git config --local user.email "github-actions@github.com"
-      #     git config --local user.name "GitHub Actions"
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
 
-      # - name: Bump version
-      #   run: |
-      #     npm version --new-version v${{ inputs.next_version }}
-      #   #   cd ${{ github.workspace }}/apps/api
-      #   #   yarn version --new-version ${{ inputs.next_version }}
+      - name: Merge develop into main
+        run: |
+          git merge --no-ff feat/release-workflow-test   # need to be updated to development after test
+          git push origin feat/github-release-workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Push changes
-      #   run: |
-      #     git push origin main --follow-tags
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    #   - name: Commit changes
-    #     run: |
-    #       git add .
-    #       git commit -m "chore: release v${{ inputs.next_version }}"
-    #       git push
+      - name: Bump version
+        run: |
+          yarn version --new-version "$TAG_NAME"
+          # cd apps/api
+          # yarn version --new-version "$TAG_NAME"
+          # pwd
+          # cd ../..
+          # cd apps/app
+          # yarn version --new-version "$TAG_NAME"
 
-    #   - name: Create a GitHub release
-    #     uses: actions/create-release@v1
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     with:
-    #       tag_name: 'v${{ inputs.next_version }}'
-    #       release_name: 'Release v${{ inputs.next_version }}'
-    #       body: 'Release of version v${{ inputs.next_version }}'
-
-      # - name: Draft release
-      #   run: gh release create v$VERSION --generate-notes --draft
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     VERSION: ${{ inputs.next_version }}
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "chore: release "$TAG_NAME"
+          git push origin main --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
