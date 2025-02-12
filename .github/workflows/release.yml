@@ -1,0 +1,64 @@
+name: Release Workflow
+run-name: Release release ${{ inputs.next_version }}
+on:
+  workflow_dispatch:
+    inputs:
+      next_version:
+        required: true
+        type: string
+        description: 'Version name'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v3
+        with:
+          ref: feat/github-release-workflow
+
+    #   - name: Merge develop into master
+    #     run: |
+    #       git config user.name "GitHub Actions"
+    #       git config user.email "actions@github.com"
+    #       git merge --no-ff 603-implement-a-release-workflow
+    #       git push origin feat/github-release-workflow
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    #   - name: Bump version
+    #     run: |
+    #       cd ${{ github.workspace }}/apps/app
+    #       yarn version --new-version ${{ inputs.next_version }}
+    #       cd ${{ github.workspace }}/apps/api
+    #       yarn version --new-version ${{ inputs.next_version }}
+
+    #   - name: Configure git
+    #     run: |
+    #       git config --local user.email "github-actions@github.com"
+    #       git config --local user.name "GitHub Actions"
+
+    #   - name: Commit changes
+    #     run: |
+    #       git add .
+    #       git commit -m "chore: release v${{ inputs.next_version }}"
+    #       git push
+
+    #   - name: Create a GitHub release
+    #     uses: actions/create-release@v1
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     with:
+    #       tag_name: 'v${{ inputs.next_version }}'
+    #       release_name: 'Release v${{ inputs.next_version }}'
+    #       body: 'Release of version v${{ inputs.next_version }}'
+
+    #   - name: Draft release
+    #     run: gh release create v$VERSION --generate-notes --draft
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #       VERSION: ${{ inputs.next_version }}
