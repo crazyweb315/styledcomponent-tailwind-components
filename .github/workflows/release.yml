@@ -19,7 +19,7 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v3
         with:
-          ref: feat/github-release-workflow
+          ref: main
 
     #   - name: Merge develop into master
     #     run: |
@@ -30,12 +30,13 @@ jobs:
     #     env:
     #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    #   - name: Bump version
-    #     run: |
-    #       cd ${{ github.workspace }}/apps/app
-    #       yarn version --new-version ${{ inputs.next_version }}
-    #       cd ${{ github.workspace }}/apps/api
-    #       yarn version --new-version ${{ inputs.next_version }}
+      - name: Bump version
+        run: |
+          echo "Version name ${{github.workspace}}" 
+          cd ${{ github.workspace }}/
+          npm version --new-version ${{ inputs.next_version }}
+        #   cd ${{ github.workspace }}/apps/api
+        #   yarn version --new-version ${{ inputs.next_version }}
 
     #   - name: Configure git
     #     run: |
@@ -57,8 +58,8 @@ jobs:
     #       release_name: 'Release v${{ inputs.next_version }}'
     #       body: 'Release of version v${{ inputs.next_version }}'
 
-    #   - name: Draft release
-    #     run: gh release create v$VERSION --generate-notes --draft
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #       VERSION: ${{ inputs.next_version }}
+      - name: Draft release
+        run: gh release create v$VERSION --generate-notes --draft
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.next_version }}
