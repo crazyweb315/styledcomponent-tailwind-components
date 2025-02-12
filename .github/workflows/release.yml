@@ -29,6 +29,19 @@ jobs:
     #       git push origin feat/github-release-workflow
     #     env:
     #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify the Node.js version you are using
+
+      - name: Check npm version
+        run: npm --version
+  
+      - name: Confirm current directory
+        run: pwd
+
+      - name: List files
+        run: ls -la  # List files to ensure package.json is present
 
       - name: Bump version
         run: |
