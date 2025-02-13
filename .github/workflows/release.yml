@@ -88,7 +88,7 @@ jobs:
           git status
       
           # cd apps/api
-          # yarn version --new-version $VERSION
+          # yarn version --no-git-tag-version --new-version $VERSION
           # pwd
           # cd ../..
           # cd apps/app
