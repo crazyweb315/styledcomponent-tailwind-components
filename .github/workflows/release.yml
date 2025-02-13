@@ -76,9 +76,9 @@ jobs:
 
       - name: Bump version
         run: |
-          yarn version --new-version "$TAG_NAME"
+          yarn version --new-version "${{ github.event.release.tag_name }}"
           # cd apps/api
-          # yarn version --new-version "$TAG_NAME"
+          # yarn version --new-version "${{ github.event.release.tag_name }}"
           # pwd
           # cd ../..
           # cd apps/app
