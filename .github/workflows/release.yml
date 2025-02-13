@@ -26,7 +26,19 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          echo "Checking if tag $TAG_NAME exists"
+          if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+
       - name: Create a tag from release
+        if: env.TAG_EXISTS == 'false'  
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
