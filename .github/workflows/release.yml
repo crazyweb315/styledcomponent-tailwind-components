@@ -92,13 +92,14 @@ jobs:
           # cd apps/app
           # yarn version --new-version ${{ github.event.release.tag_name }}
 
-          git add .
-          if ! git diff-index --quiet HEAD --; then
-            git commit -m "chore: release ${{ github.event.release.tag_name }}"
-            git push origin --follow-tags
-          else
+          git add package.json
+          # Check if there are changes to commit
+          if git diff-index --quiet HEAD --; then
             echo "No changes to commit"
-          fi  
+          else
+            git commit -m "chore: release ${{ github.event.release.tag_name }}"
+            git push origin main
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  
