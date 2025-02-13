@@ -89,7 +89,7 @@ jobs:
       - name: Commit changes
         run: |
           git add .
-          git commit -m "chore: release `${{ github.event.release.tag_name }}`"
+          git commit -m "chore: release ${{ github.event.release.tag_name }}"
           git push origin main --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
