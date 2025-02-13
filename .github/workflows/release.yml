@@ -73,8 +73,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Pull latest changes
+        run: |
+          git pull origin main
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bump version
+      - name: Bump version && Commit changes
         run: |
           yarn version --new-version ${{ github.event.release.tag_name }}
           cat package.json
@@ -86,12 +91,7 @@ jobs:
           # cd ../..
           # cd apps/app
           # yarn version --new-version ${{ github.event.release.tag_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-              
-      - name: Commit changes
-        run: |
           git add .
           if ! git diff-index --quiet HEAD --; then
             git commit -m "chore: release ${{ github.event.release.tag_name }}"
