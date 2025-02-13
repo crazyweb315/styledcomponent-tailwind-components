@@ -90,7 +90,7 @@ jobs:
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"  # Extracts the tag name from the release event
           git add .
-          git commit -m "chore: release $TAG_NAME"
+          git commit -m "chore: released new version"
           git push origin main --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
