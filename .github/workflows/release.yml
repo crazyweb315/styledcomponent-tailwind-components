@@ -76,7 +76,6 @@ jobs:
 
       - name: Bump version
         run: |
-          git pull origin
           yarn version --new-version ${{ github.event.release.tag_name }}
           # cd apps/api
           # yarn version --new-version ${{ github.event.release.tag_name }}
@@ -90,8 +89,12 @@ jobs:
       - name: Commit changes
         run: |
           git add .
-          git commit -m "chore: release ${{ github.event.release.tag_name }}"
-          git push origin --follow-tags
+          if ! git diff-index --quiet HEAD --; then
+            git commit -m "chore: release ${{ github.event.release.tag_name }}"
+            git push origin --follow-tags
+          else
+            echo "No changes to commit"
+          fi  
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  
