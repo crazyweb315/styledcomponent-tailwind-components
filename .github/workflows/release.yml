@@ -82,14 +82,14 @@ jobs:
           # pwd
           # cd ../..
           # cd apps/app
-          # yarn version --new-version "$TAG_NAME"
+          # yarn version --new-version "${{ github.event.release.tag_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit changes
         run: |
           git add .
-          git commit -m "chore: release "$TAG_NAME"
+          git commit -m "chore: release "${{ github.event.release.tag_name }}"
           git push origin main --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
