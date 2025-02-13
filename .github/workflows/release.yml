@@ -77,6 +77,9 @@ jobs:
       - name: Bump version
         run: |
           yarn version --new-version ${{ github.event.release.tag_name }}
+          cat package.json
+          git status
+      
           # cd apps/api
           # yarn version --new-version ${{ github.event.release.tag_name }}
           # pwd
@@ -86,6 +89,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+              
       - name: Commit changes
         run: |
           git add .
