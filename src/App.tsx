@@ -2,7 +2,6 @@ import ButtonText from 'components/Buttons/ButtonText';
 import { CTALoader } from 'components/CTA/CTALoader';
 import { Text  } from 'styles';
 
-
 const App = () => {
   return (
     <>
